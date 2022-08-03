@@ -46,6 +46,8 @@ class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
+	private static final String VIEWS_OWNER_DELETE_FORM = "owners/deleteOwnerForm";
+
 	private final OwnerRepository owners;
 
 	public OwnerController(OwnerRepository clinicService) {
@@ -148,6 +150,25 @@ class OwnerController {
 			owner.setId(ownerId);
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
+		}
+	}
+
+	@GetMapping("/owners/{ownerId}/delete")
+	public String initDeleteOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
+		Owner owner = this.owners.findById(ownerId);
+		model.addAttribute(owner);
+		return VIEWS_OWNER_DELETE_FORM;
+	}
+
+	@PostMapping("/owners/{ownerId}/delete")
+	public String processDeleteOwnerForm(@Valid Owner owner, BindingResult result,
+			@PathVariable("ownerId") int ownerId) {
+		if (result.hasErrors()) {
+			return VIEWS_OWNER_DELETE_FORM;
+		}
+		else {
+			this.owners.deleteById(owner.getId());
+			return "redirect:/owners";
 		}
 	}
 
