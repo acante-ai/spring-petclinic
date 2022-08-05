@@ -27,8 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant
  * with Spring Data naming conventions so this interface can easily be extended for Spring
- * Data. See:
- * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation
+ * Data. See: <a href=
+ * "https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation">...</a>
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -73,10 +73,17 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	void save(Owner owner);
 
 	/**
-	 * Returnes all the owners from data store
+	 * Returns all the owners from data store
 	 **/
 	@Query("SELECT owner FROM Owner owner")
 	@Transactional(readOnly = true)
 	Page<Owner> findAll(Pageable pageable);
+
+	/**
+	 * Deletes the entity with the given id.
+	 * @param id must not be {@literal null}.
+	 * @throws IllegalArgumentException in case the given {@literal id} is {@literal null}
+	 */
+	void deleteById(Integer id);
 
 }
